@@ -43,9 +43,33 @@ let Seattle = {
   getAvgCookieSalesPerHour: function () {
     let totalCookies = this.getCustomersPerHour() * this.avgCookiesPerSale;
     let storeHours = this.storeCloseHour - this.storeOpenHour;
-    return totalCookies / storeHours;
+    return Math.ceil(totalCookies / storeHours);
   }
 }
 
 let temp = dailySalesReport(Seattle);
 console.log(temp);
+
+/* Create a UL and LI child elements and populate them with Seattle data */
+let sectionEl = document.getElementById('salesList');
+console.log(sectionEl);
+
+// add paragraph header to the Seattle report
+let pElement = document.createElement('p');
+//pElement.createTextNode(Seattle.location);
+pElement.innerHTML = Seattle.location;
+sectionEl.appendChild(pElement);
+
+//  add ul and li elements below the paragraph element in the Seattle report
+let ulElement = document.createElement('ul');
+sectionEl.appendChild(ulElement);
+let seattleSalesReport = dailySalesReport(Seattle);
+
+
+for (let idx = 0; idx < seattleSalesReport.length; idx++){
+  let ilElement = document.createElement('li');
+  let newText = document.createTextNode(seattleSalesReport[idx]);
+  ilElement.appendChild(newText);
+  ulElement.appendChild(ilElement);
+}
+/* End Seattle Data */
