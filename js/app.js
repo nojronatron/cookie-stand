@@ -4,10 +4,10 @@
 function dailySalesReport(store){
   let result = [];
   let totalSales = 0;
-  let hoursOpen = store.storeCloseHour - store.storeOpenHour;
-  console.log(`hoursOpen: ${hoursOpen}`);
+  let hoursOpen = store.storeClosesAt - store.storeOpensAt;
+  //  console.log(`hoursOpen: ${hoursOpen}`);
   
-  for(let idx=0; idx < hoursOpen; idx++){
+  for (let idx = 0; idx < hoursOpen; idx++){
     let avgCookieSalesThisHour = store.getAvgCookieSalesPerHour();
     result.push(avgCookieSalesThisHour);
     totalSales += avgCookieSalesThisHour;
@@ -29,8 +29,8 @@ let Seattle = {
   minCustomers: 23,
   maxCustomers: 65,
   avgCookiesPerSale: 6.3,
-  storeOpenHour: 6,
-  storeCloseHour: 19,
+  storeOpensAt: 6,
+  storeClosesAt: 20,
   setSalesStats(minCust, maxCust, averageCookiesPerSale) {
     this.minCustomers = minCust;
     this.maxCustomers = maxCust;
@@ -42,20 +42,16 @@ let Seattle = {
   },
   getAvgCookieSalesPerHour: function () {
     let totalCookies = this.getCustomersPerHour() * this.avgCookiesPerSale;
-    let storeHours = this.storeCloseHour - this.storeOpenHour;
+    let storeHours = this.storeClosesAt - this.storeOpensAt;
     return Math.ceil(totalCookies / storeHours);
   }
 }
 
-let temp = dailySalesReport(Seattle);
-console.log(temp);
-
 /* Create a UL and LI child elements and populate them with Seattle data */
 let sectionEl = document.getElementById('salesList');
-console.log(sectionEl);
 
 // add paragraph header to the Seattle report
-let pElement = document.createElement('p');
+let pElement = document.createElement('h3');
 //pElement.createTextNode(Seattle.location);
 pElement.innerHTML = Seattle.location;
 sectionEl.appendChild(pElement);
@@ -65,11 +61,36 @@ let ulElement = document.createElement('ul');
 sectionEl.appendChild(ulElement);
 let seattleSalesReport = dailySalesReport(Seattle);
 
+let hourOfReport = Seattle.storeOpensAt;
+let twelveHourTime = 0;
 
 for (let idx = 0; idx < seattleSalesReport.length; idx++){
   let ilElement = document.createElement('li');
-  let newText = document.createTextNode(seattleSalesReport[idx]);
-  ilElement.appendChild(newText);
-  ulElement.appendChild(ilElement);
+  let ampm = 'am';
+
+  if (hourOfReport < 12) {
+    ampm = 'am';
+    twelveHourTime = hourOfReport;
+  } else if (hourOfReport == 12) {
+    ampm = 'pm';
+    twelveHourTime = hourOfReport;
+  } else if (hourOfReport > 12) {
+    ampm = 'pm';
+    twelveHourTime = hourOfReport - 12;
+  }
+  
+  if (hourOfReport === Seattle.storeClosesAt) {
+    let hourlyRecord = `Total: ${seattleSalesReport[idx]} cookies`;
+    let newText = document.createTextNode(hourlyRecord);
+    ilElement.appendChild(newText);
+    ulElement.appendChild(ilElement);
+    break;
+  } else {
+    let hourlyRecord = `${twelveHourTime}${ampm}: ${seattleSalesReport[idx]} cookies`;
+    let newText = document.createTextNode(hourlyRecord);
+    ilElement.appendChild(newText);
+    ulElement.appendChild(ilElement);
+    hourOfReport++;
+  }
 }
 /* End Seattle Data */
