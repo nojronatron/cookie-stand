@@ -10,14 +10,16 @@ function randomCustomers(min, max) {
 }
 
 /*  cookie store constructor function */
-function CookieStore(name, minCustomers, maxCustomers, avgCookiesPerSale) {
-  this.name = name;
-  this.location = name; //  for now to support functionality during refactoring
-  this.minCustomers = minCustomers;
-  this.maxCustomer = maxCustomers;
-  this.avgCookiesPerSale = avgCookiesPerSale;
+function CookieStore(storeName, custMin, custMax, averageCookiesPerSale) {
+  this.name = storeName;
+  this.location = storeName; //  for now to support functionality during refactoring
+  this.minCustomers = custMin;
+  this.maxCustomer = custMax;
+  this.avgCookiesPerSale = averageCookiesPerSale;
   this.salesTotal = 0; //  store the result of daily sales sum
   this.dailySales = []; //  store daily sales numbers
+  this.storeOpensAt = 700;
+  this.storeClosesAt = 2000;
   cookieStores.push(this); //  adds self to cookieStores array
 }
 /*  end constructor */
@@ -26,23 +28,35 @@ function CookieStore(name, minCustomers, maxCustomers, avgCookiesPerSale) {
 CookieStore.prototype.getDailySalesReport = function() {
   let salesByDay = [];
   let salesTtl = 0;
-  let hoursOpen = this.storeClosesAt - this.storeOpensAt;
+  let hoursOpen = (this.storeClosesAt - this.storeOpensAt) / 100;
 
   for (let idx = 0; idx < hoursOpen; idx++) {
     let avgCookieSalesThisHour = this.getAvgCookieSalesPerHour();
     salesByDay.push(avgCookieSalesThisHour);
     salesTtl += avgCookieSalesThisHour;
+    console.log(`avgCookieSalesThisHour: ${avgCookieSalesThisHour}`);
+    console.log(`salesByDay ${salesByDay}`);
+    console.log(`salesTtl ${salesTtl}`);
+
+    this.dailySales = salesByDay;
+    this.salesTotal = salesTtl;
   };
 
+  console.log(`salesByDay ${salesByDay}, salesTtl ${salesTtl}`);
   this.dailySales = salesByDay;
-  this.totalSales = salesTtl;
+  this.salesTotal = salesTtl;
 }
 
-/*  get average coookie sales per hour prototype function */
+/*  get average coookie sales per hour helper function */
 CookieStore.prototype.getAvgCookieSalesPerHour = function() {
   let totalCookies = this.getCustomersPerHour() * this.avgCookiesPerSale;
   let storeHours = this.storeClosesAt - this.storeOpensAt;
   return Math.ceil(totalCookies / storeHours);
+}
+
+/*  get number of customers per hour  */
+CookieStore.prototype.getCustomersPerHour = function() {
+  return randomCustomers(this.minCustomers, this.maxCustomer);
 }
 
 /*  helper function instantiates cookie stores, triggers reports, and calls rendering functions  */
@@ -53,12 +67,6 @@ function renderSalesReport() {
   new CookieStore('Dubai', 11, 38, 3.7);
   new CookieStore('Paris', 20, 38, 2.3);
   new CookieStore('Lima', 2, 16, 4.6);
-
-  /*  teseting  */
-  console.log(`Seattle salesTotal ${cookieStores[0].salesTotal}`);
-  console.log(`Seattle dailySales ${cookieStores[0].dailySales}`);
-  console.log(`hoursOpen ${cookieStores[0].hoursOpen}`);
-  /*  testing */
 
   //  render store data in a table in the browser
   let tableEl = document.getElementById('cookiestoretable');
@@ -138,8 +146,10 @@ function renderSalesReport() {
   tableEl.appendChild(reportBodyEl);
 
   for (let idx = 0; idx < cookieStores.length; idx++) {
+    console.log(`Seattle dailySales ${cookieStores[0].dailySales}`);
+
     cookieStores[idx].getDailySalesReport();
-    // console.log(cookieStores[0].dailySales);
+    console.log(cookieStores[0].dailySales);
 
     //  table data row, one for each location
     let reportRowEl = document.createElement('tr');
@@ -152,27 +162,33 @@ function renderSalesReport() {
     for (let idy = 0; idy < cookieStores[idx].dailySales.length; idy++) {
       //  daily sale data cell content, one for each hour
       let hourTD = document.createElement('td');
-      hourTD.textContent = cookieStores[idx].dailySales[ydx];
+      hourTD.textContent = cookieStores[idx].dailySales[idy];
       reportRowEl.appendChild(hourTD);
     }
 
     //  daily location total, single cell, obj.salesTotal property value
 
-
   }
 }
 
-
-  // /*  TEST THAT OBJECTS ARE ACTUALLY CREATED  */
-  // for (let kdx = 0; kdx < cookieStores.length; kdx++) {
-  //   console.log(cookieStores[kdx].dailySales);
-  // }
-
-
-
-
 /*  DO THE THING  */
 renderSalesReport();
+
+
+// /*  TEST THAT OBJECTS ARE ACTUALLY CREATED  */
+// for (let kdx = 0; kdx < cookieStores.length; kdx++) {
+//   console.log(cookieStores[kdx].dailySales);
+// }
+
+
+// /*  teseting  */
+// console.log(`${cookieStores[0].name}, ${cookieStores[0].location}`)
+// cookieStores[0].getDailySalesReport();
+// console.log(`Seattle salesTotal ${cookieStores[0].salesTotal}`);
+// console.log(`hoursOpen ${cookieStores[0].hoursOpen}`);
+// /*  testing */
+
+
 
 /*  end table generator */
 
