@@ -27,3 +27,8 @@ ul {
 li {
   margin: 0.2em 0em;
 }
+table th {
+  border: black 2px solid;
+  padding: 4px;
+  text-align: center;
+}
