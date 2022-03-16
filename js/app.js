@@ -1,198 +1,165 @@
 'use strict';
 
-//  a cookie store
-let Seattle = {
-  location: "Seattle",
-  minCustomers: 23,
-  maxCustomers: 65,
-  avgCookiesPerSale: 6.3,
-  storeOpensAt: 6,
-  storeClosesAt: 20,
-  setSalesStats(minCust, maxCust, averageCookiesPerSale) {
-    this.minCustomers = minCust;
-    this.maxCustomers = maxCust;
-    this.avgCookiesPerSale = averageCookiesPerSale;
-  },
-  getCustomersPerHour: function () {
-    //  call this to get a random number between minCustomers and maxCustomers, inclusive
-    return randomCustomers(this.minCustomers, this.maxCustomers);
-  },
-  getAvgCookieSalesPerHour: function () {
-    let totalCookies = this.getCustomersPerHour() * this.avgCookiesPerSale;
-    let storeHours = this.storeClosesAt - this.storeOpensAt;
-    return Math.ceil(totalCookies / storeHours);
-  }
+/*  CookieStore instance storage  */
+let cookieStores = [];
+
+/*  2d array of store sales data  */
+let allStoresSalesData = [];
+
+/*  cookiestore definition  */
+function CookieStore(name, minCust, maxCust, avgCPerSale) {
+  this.location = name;
+  this.minCustomers = minCust;
+  this.maxCustomers = maxCust;
+  this.avgCookiesPerSale = avgCPerSale;
+  this.storeOpensAt = 6;
+  this.storeClosesAt = 20;  //  hundred hours
+  this.hourlySales = [];
+  this.totalSales = 0;
+  cookieStores.push(this);
 }
 
-let Tokyo = {
-  location: "Tokyo",
-  minCustomers: 3,
-  maxCustomers: 24,
-  avgCookiesPerSale: 1.2,
-  storeOpensAt: 6,
-  storeClosesAt: 20,
-  setSalesStats(minCust, maxCust, averageCookiesPerSale) {
-    this.minCustomers = minCust;
-    this.maxCustomers = maxCust;
-    this.avgCookiesPerSale = averageCookiesPerSale;
-  },
-  getCustomersPerHour: function () {
-    //  call this to get a random number between minCustomers and maxCustomers, inclusive
-    return randomCustomers(this.minCustomers, this.maxCustomers);
-  },
-  getAvgCookieSalesPerHour: function () {
-    let totalCookies = this.getCustomersPerHour() * this.avgCookiesPerSale;
-    let storeHours = this.storeClosesAt - this.storeOpensAt;
-    return Math.ceil(totalCookies / storeHours);
-  }
-}
+/*  prototype function sets hourlySales and totalSales data   */
+CookieStore.prototype.generateSalesReport = function () {
+  let hoursOpen = this.storeClosesAt - this.storeOpensAt;
+  let accumulatedSales = 0;
 
-let Dubai = {
-  location: "Dubai",
-  minCustomers: 11,
-  maxCustomers: 38,
-  avgCookiesPerSale: 3.7,
-  storeOpensAt: 6,
-  storeClosesAt: 20,
-  setSalesStats(minCust, maxCust, averageCookiesPerSale) {
-    this.minCustomers = minCust;
-    this.maxCustomers = maxCust;
-    this.avgCookiesPerSale = averageCookiesPerSale;
-  },
-  getCustomersPerHour: function () {
-    //  call this to get a random number between minCustomers and maxCustomers, inclusive
-    return randomCustomers(this.minCustomers, this.maxCustomers);
-  },
-  getAvgCookieSalesPerHour: function () {
-    let totalCookies = this.getCustomersPerHour() * this.avgCookiesPerSale;
-    let storeHours = this.storeClosesAt - this.storeOpensAt;
-    return Math.ceil(totalCookies / storeHours);
-  }
-}
-
-let Paris = {
-  location: "Paris",
-  minCustomers: 20,
-  maxCustomers: 38,
-  avgCookiesPerSale: 2.3,
-  storeOpensAt: 6,
-  storeClosesAt: 20,
-  setSalesStats(minCust, maxCust, averageCookiesPerSale) {
-    this.minCustomers = minCust;
-    this.maxCustomers = maxCust;
-    this.avgCookiesPerSale = averageCookiesPerSale;
-  },
-  getCustomersPerHour: function () {
-    //  call this to get a random number between minCustomers and maxCustomers, inclusive
-    return randomCustomers(this.minCustomers, this.maxCustomers);
-  },
-  getAvgCookieSalesPerHour: function () {
-    let totalCookies = this.getCustomersPerHour() * this.avgCookiesPerSale;
-    let storeHours = this.storeClosesAt - this.storeOpensAt;
-    return Math.ceil(totalCookies / storeHours);
-  }
-}
-
-let Lima = {
-  location: "Lima",
-  minCustomers: 2,
-  maxCustomers: 16,
-  avgCookiesPerSale: 4.6,
-  storeOpensAt: 6,
-  storeClosesAt: 20,
-  setSalesStats(minCust, maxCust, averageCookiesPerSale) {
-    this.minCustomers = minCust;
-    this.maxCustomers = maxCust;
-    this.avgCookiesPerSale = averageCookiesPerSale;
-  },
-  getCustomersPerHour: function () {
-    //  call this to get a random number between minCustomers and maxCustomers, inclusive
-    return randomCustomers(this.minCustomers, this.maxCustomers);
-  },
-  getAvgCookieSalesPerHour: function () {
-    let totalCookies = this.getCustomersPerHour() * this.avgCookiesPerSale;
-    let storeHours = this.storeClosesAt - this.storeOpensAt;
-    return Math.ceil(totalCookies / storeHours);
-  }
-}
-
-//  global helper function to generate array of sales by hour with total sales per day
-function dailySalesReport(store){
-  let result = [];
-  let totalSales = 0;
-  let hoursOpen = store.storeClosesAt - store.storeOpensAt;
-  //  console.log(`hoursOpen: ${hoursOpen}`);
-  
   for (let idx = 0; idx < hoursOpen; idx++){
-    let avgCookieSalesThisHour = store.getAvgCookieSalesPerHour();
-    result.push(avgCookieSalesThisHour);
-    totalSales += avgCookieSalesThisHour;
-  };
-  
-  result.push(totalSales);
-  return result;
+    let totalCookies = Math.floor(Math.random() * (this.maxCustomers - this.minCustomers + 1) + this.minCustomers);
+    totalCookies *= this.avgCookiesPerSale;
+    totalCookies = Math.ceil(totalCookies);
+    this.hourlySales.push(totalCookies);
+    accumulatedSales += totalCookies;
+  }
+
+  this.totalSales = accumulatedSales;
 }
 
-//  global helper function generates a random number given min and max parameters
-function randomCustomers(min, max) {
-  //  Ref: MDN documentation
-  return Math.floor(Math.random() * (max - min + 1) + min);
-}
+/*  populate the allStoreData array so hourly sums can be produced  */
+function populateAllStoresSalesData() {
+  let allStoresSales = [];
 
+  for (let cookieStoreId = 0; cookieStoreId < cookieStores.length; cookieStoreId++){
+    cookieStores[cookieStoreId].generateSalesReport();
+    allStoresSales.push(cookieStores[cookieStoreId].hourlySales);
+  }
 
-/*  create an array containing store objects */
-let stores = [Seattle, Tokyo, Dubai, Paris, Lima];
+  for (let timeframe = 0; timeframe < 14; timeframe++){
+    let runningSum = 0;
 
-/*  Stores Sales Reports */
-//  cycle through the stores and post the sales data to html 
-for (let storeID = 0; storeID < stores.length; storeID++) {
-  let store = stores[storeID];
-
-  /* Create a UL and LI child elements and populate them with store data */
-  let sectionEl = document.getElementById('salesList');
-
-  // add paragraph header to the Seattle report
-  let pElement = document.createElement('h3');
-  //pElement.createTextNode(Seattle.location);
-  pElement.innerHTML = store.location;
-  sectionEl.appendChild(pElement);
-
-  //  add ul and li elements below the paragraph element in the Seattle report
-  let ulElement = document.createElement('ul');
-  sectionEl.appendChild(ulElement);
-  let storeSalesReport = dailySalesReport(store);
-
-  let hourOfReport = Seattle.storeOpensAt;
-  let twelveHourTime = 0;
-
-  for (let idx = 0; idx < storeSalesReport.length; idx++) {
-    let ilElement = document.createElement('li');
-    let ampm = 'am';
-
-    if (hourOfReport < 12) {
-      ampm = 'am';
-      twelveHourTime = hourOfReport;
-    } else if (hourOfReport == 12) {
-      ampm = 'pm';
-      twelveHourTime = hourOfReport;
-    } else if (hourOfReport > 12) {
-      ampm = 'pm';
-      twelveHourTime = hourOfReport - 12;
+    for (let storeLocation = 0; storeLocation < cookieStores.length; storeLocation++) {
+      runningSum += allStoresSales[storeLocation][timeframe];
     }
 
-    if (hourOfReport === store.storeClosesAt) {
-      let hourlyRecord = `Total: ${storeSalesReport[idx]} cookies`;
-      let newText = document.createTextNode(hourlyRecord);
-      ilElement.appendChild(newText);
-      ulElement.appendChild(ilElement);
-      break;
-    } else {
-      let hourlyRecord = `${twelveHourTime}${ampm}: ${storeSalesReport[idx]} cookies`;
-      let newText = document.createTextNode(hourlyRecord);
-      ilElement.appendChild(newText);
-      ulElement.appendChild(ilElement);
-      hourOfReport++;
-    }
+    allStoresSalesData.push(runningSum);
   }
 }
-/* Stores report to HTML */
+
+/*  render the header row */
+function renderHeader() {
+  let tableEl = document.getElementById('salesTable');
+  let headerEl = document.createElement('thead');
+  tableEl.appendChild(headerEl);
+  let row1 = document.createElement('tr');
+  headerEl.appendChild(row1);
+
+  //  first th data is empty
+  let th1El = document.createElement('th');
+  th1El.textContent = '';
+  row1.appendChild(th1El);
+
+  //  create th elements with a reasonable clock-time as content
+  for (let ldx = 0; ldx < 14; ldx++) {
+    let thEl = document.createElement('th');
+    let cellContent = '';
+    let hour = ldx + 6;
+    let hours = ':00';
+
+    //  javascript does the work to make the header time slots correct
+    if (hour < 12) {
+      cellContent = `${hour}${hours}am`;
+    }
+    if (hour == 12) {
+      cellContent = `${hour}${hours}pm`
+    }
+    if (hour > 12) {
+      cellContent = `${hour-12}${hours}pm`;
+    }
+
+    thEl.textContent = cellContent;
+    row1.appendChild(thEl);
+  }
+
+  //  create the last column of the table head
+  let thDltEl = document.createElement('th');
+  thDltEl.textContent = 'Daily Location Total';
+  row1.appendChild(thDltEl);
+}
+
+/*  render the footer row using header cells for the sumtotals  */
+function renderFooter() {
+  //  total each hour across stores
+  let tableEl = document.getElementById('salesTable');
+  let summedFooterEl = document.createElement('tfoot');
+  tableEl.appendChild(summedFooterEl);
+
+  let sumTotalsRow = document.createElement('tr');
+  summedFooterEl.appendChild(sumTotalsRow);
+
+  let tf1El = document.createElement('td');
+  tf1El.setAttribute('id', 'boldme'); //  theres a first time for everything
+  tf1El.textContent = 'Totals';
+  sumTotalsRow.appendChild(tf1El);
+
+  for (let storeId = 0; storeId < 15; storeId++){
+    let sumRowEl = document.createElement('td');
+    sumRowEl.textContent = allStoresSalesData[storeId];
+    sumTotalsRow.appendChild(sumRowEl);
+  }
+}
+
+function renderBody() {
+  //  create TBODY element
+  let tableEl = document.getElementById('salesTable');
+  let reportBodyEl = document.createElement('tbody');
+  tableEl.appendChild(reportBodyEl);
+
+  for (let idx = 0; idx < cookieStores.length; idx++) {
+    
+    //  table data row, one for each location
+    let reportRowEl = document.createElement('tr');
+    reportBodyEl.appendChild(reportRowEl);
+
+    let colHeader = document.createElement('th');
+    colHeader.textContent = cookieStores[idx].location;
+    reportRowEl.appendChild(colHeader);
+
+    for (let idy = 0; idy < cookieStores[idx].hourlySales.length; idy++) {
+      //  daily sale data cell content, one for each hour
+      let hourTD = document.createElement('td');
+      hourTD.textContent = cookieStores[idx].hourlySales[idy];
+      reportRowEl.appendChild(hourTD);
+    }
+
+    //  daily location total, single cell, obj.totalSales property value
+    let ttlSalesTD = document.createElement('td');
+    ttlSalesTD.textContent = cookieStores[idx].totalSales;
+    reportRowEl.appendChild(ttlSalesTD);
+  }
+}
+
+/*  call all functions to populate the page */
+function go() {
+  new CookieStore('Seattle', 23, 65, 6.3);
+  new CookieStore('Tokyo', 3, 24, 1.2);
+  new CookieStore('Dubai', 11, 38, 3.7);
+  new CookieStore('Paris', 20, 38, 2.3);
+  new CookieStore('Lima', 2, 16, 4.6);
+  populateAllStoresSalesData();
+  renderHeader();
+  renderBody();
+  renderFooter();
+}
+
+/*  make all the things happen  */
+go();
