@@ -53,7 +53,6 @@ function populateAllStoresSalesData() {
 
     allStoresSalesData.push(runningSum);
   }
-
 }
 
 /*  render the header row */
@@ -108,6 +107,7 @@ function renderFooter() {
   summedFooterEl.appendChild(sumTotalsRow);
 
   let tf1El = document.createElement('td');
+  tf1El.setAttribute('id', 'boldme'); //  theres a first time for everything
   tf1El.textContent = 'Totals';
   sumTotalsRow.appendChild(tf1El);
 
