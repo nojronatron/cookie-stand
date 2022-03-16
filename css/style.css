@@ -1,5 +1,5 @@
 * {
-  background-color: darkcyan;
+  background-color: rgb(52, 75, 208);
 }
 body {
   color: orange;
@@ -26,4 +26,9 @@ ul {
 }
 li {
   margin: 0.2em 0em;
+}
+table, th, td {
+  border: black 2px solid;
+  padding: 4px;
+  text-align: center;
 }
