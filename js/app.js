@@ -148,6 +148,29 @@ function renderBody() {
   }
 }
 
+/*  ADD LOCATION FORM data gathering  */
+/*  get reference to the Form in the DOM */
+let addLocationElement = document.getElementById('addLocationSection');
+let addLocationFormEl = document.getElementById('add-location-form');
+
+/*  add an event listener */
+addLocationFormEl.addEventListener('submit', handleNewLocationAdded);
+
+/*  add an event handler  */
+function handleNewLocationAdded(event) {
+  event.preventDefault();
+  let newStoreLocation = event.target.locationName.value;
+  console.log(newStoreLocation);
+  let newStoreMinCust = event.target.minCustomers.value;
+  console.log(newStoreMinCust);
+  let newStoreMaxCust = event.target.maxCustomers.value;
+  console.log(newStoreMaxCust);
+  let newStoreAvgCPerSale = event.target.avgCookiesPerSale.value;
+  console.log(newStoreAvgCPerSale);
+
+}
+/*  END Add Location Form data gathering code  */
+
 /*  call all functions to populate the page */
 function go() {
   new CookieStore('Seattle', 23, 65, 6.3);
