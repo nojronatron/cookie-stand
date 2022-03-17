@@ -1,13 +1,18 @@
-* {
+/* * {
   background-color: rgb(52, 75, 208);
-}
+} */
 body {
   color: orange;
+  background-color: rgb(52, 75, 208);
   font-family: Arial, Tahoma, sans-serif;
   font-size: 100%;
 }
 header {
   width: 100%;
+}
+nav {
+  background-color: white;
+  color:orange;
 }
 section {
   margin: auto;
@@ -21,12 +26,14 @@ h3 {
   display: block;
   text-align: center;
 }
-ul {
-  list-style: circle outside;
+nav ul {
+  color: orange;
+  background-color: white;
   padding-left: 2em;
   margin: 0.4em 0em;
 }
 li {
+  display: inline;
   margin: 0.2em 0em;
 }
 table, th, td {
@@ -43,6 +50,7 @@ figure {
 figcaption {
   font-size: .5em;
   text-align: center;
+  display: none;
 }
 img {
   display:block;
