@@ -1,6 +1,6 @@
 body {
-  color: rgb(15,8,0);
-  background-color: rgb(50, 69, 119); /* steely water */
+  color: rgb(15,7,0); /*  body font color */
+  background-color: rgb(50, 69, 119); /* steely puget blue */
   font-family: Arial, Tahoma, sans-serif;
   font-size: 100%;
 }
@@ -48,7 +48,7 @@ table, th, td {
   padding: 4px;
   text-align: center;
   color:rgb(2,71,28);
-  background-color: rgb(255,213,171); /* report background? */
+  background-color: rgb(255,213,171); /* report background */
 }
 th {
   color: rgb(98,50,3);  /* report headers */
@@ -75,9 +75,15 @@ img {
   color:rgb(2,71,28);
   background-color: rgb(255,213,171);
   font-family: 'Courgette', cursive;
+}
+.gfontalpha {
+  color: rgb(177,119,61); /* a font color  */
   font-family: 'PT Sans', sans-serif;
 }
+.gfontbravo {
+  color: rgb(1,3,10);
+  font-family: 'Courgette', cursive;
+}
 :visited {
-  /*color: rgb(177,119,61); /* a font color  */
-  color: rgb(9,24,66); /* alternate color? */
+  color: rgb(9,24,66); /* alternate font */
 }
