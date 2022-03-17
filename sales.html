@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Salmon Cookies Sales</title>
+    <title>Salmon Cookies Site Administration</title>
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,6 +24,26 @@
         </section>
       </nav>
     </header>
+
+    <section>
+      <form id="add-location-form">
+        <fieldset>
+          <legend>Add A New Location</legend>
+            <label for="locationName">Location Name</label>
+            <input type="text" id="locationName" name="locationName">
+
+            <label for="minCustomers">Minimum Customers Per Hour</label>
+            <input type="number" id="minCustomers" name="minCustomers">
+
+            <label for="maxCustomers">Maximum Customers Per Hour</label>
+            <input type="number" id="maxCustomers" name="maxCustomers">
+
+            <label for="avgCookiesPerSale">Average Cookies Per Sale</label>
+            <input type="number" id="avgCookiesPerSale" name="avgCookiesPerSale">
+        </fieldset>
+        <button type="submit">Submit</button>
+      </form>
+    </section>
 
     <section>
       <h3 class="highlightfont">Hourly Sales Report by Store</h3>
