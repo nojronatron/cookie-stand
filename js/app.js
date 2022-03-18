@@ -150,7 +150,7 @@ function appendSingleStoreToHourlySalesReportBody(store) {
   for (let currHour = 0; currHour < store.hourlySales.length; currHour++) {
     //  daily sale data cell content, one for each hour
     let hourTD = document.createElement('td');
-    hourTD.textContent = sore.hourlySales[currHour];
+    hourTD.textContent = store.hourlySales[currHour];
     reportTrEl.appendChild(hourTD);
   }
 
