@@ -35,14 +35,26 @@ CookieStore.prototype.generateSalesReport = function () {
   this.totalSales = accumulatedSales;
 }
 
-/*  populate the allStoreData array so hourly sums can be produced  */
-function populateAllStoresSalesData() {
-  let allStoresSales = [];
+/*  generate sales report for ALL existing locations at once  */
+function generateSalesReports() {
+  let result = [];
 
   for (let cookieStoreId = 0; cookieStoreId < cookieStores.length; cookieStoreId++){
     cookieStores[cookieStoreId].generateSalesReport();
-    allStoresSales.push(cookieStores[cookieStoreId].hourlySales);
+    result.push(cookieStores[cookieStoreId].hourlySales);
   }
+
+  return result;
+}
+
+/*  populate the allStoreData array so hourly sums can be produced  */
+function populateAllStoresSalesData() {
+  let allStoresSales = generateSalesReports();
+
+  // for (let cookieStoreId = 0; cookieStoreId < cookieStores.length; cookieStoreId++){
+  //   cookieStores[cookieStoreId].generateSalesReport();
+  //   allStoresSales.push(cookieStores[cookieStoreId].hourlySales);
+  // }
 
   for (let timeframe = 0; timeframe < 14; timeframe++){
     let runningSum = 0;
@@ -51,8 +63,9 @@ function populateAllStoresSalesData() {
       runningSum += allStoresSales[storeLocation][timeframe];
     }
 
-    allStoresSalesData.push(runningSum);
+    console.log(`allStoresSalesData.push(runningSum): ${runningSum}`);    allStoresSalesData.push(runningSum);
   }
+  console.log(`allStoresSalesData: [${allStoresSalesData}]`);
 }
 
 /*  render the header row */
@@ -101,6 +114,9 @@ function renderFooter() {
   //  total each hour across stores
   let tableEl = document.getElementById('salesTable');
   let summedFooterEl = document.createElement('tfoot');
+
+  //  give the footer an attribute that can be used to find it later
+  summedFooterEl.setAttribute('id', 'reportFooterElement');
   tableEl.appendChild(summedFooterEl);
 
   let sumTotalsRow = document.createElement('tr');
@@ -118,10 +134,44 @@ function renderFooter() {
   }
 }
 
+
+
+/*  append a row to an existing table body including store name, hourly data, and Store TTL */
+function appendSingleStoreToHourlySalesReportBody(store) {
+  //  purpose: draw the data row in the table body for a single store
+  
+  let bodyEl = document.getElementById('reportBody'); //  get table body
+  let reportTrEl = document.createElement('tr');  //  create table row
+  bodyEl.appendChild(reportTrEl);                 //  append table row
+  let reportStoreNameEl = document.createElement('th'); //  create col header
+  reportStoreNameEl.textContent = store.location; //  put the store name into text element
+  reportTrEl.append(reportStoreNameEl);           //  append table header
+
+  for (let currHour = 0; currHour < store.hourlySales.length; currHour++) {
+    //  daily sale data cell content, one for each hour
+    let hourTD = document.createElement('td');
+    hourTD.textContent = sore.hourlySales[currHour];
+    reportTrEl.appendChild(hourTD);
+  }
+
+    //  add current store daily total
+    let ttlSalesTD = document.createElement('td');
+    ttlSalesTD.textContent = store.totalSales;
+    reportTrEl.appendChild(ttlSalesTD);
+}
+
+function removeReportTableFooter() {
+  //  find the table footer and drop it so a new row can be added
+  let footerEl = document.getElementById('reportFooterElement');
+  footerEl.remove();
+}
+
+
 function renderBody() {
   //  create TBODY element
   let tableEl = document.getElementById('salesTable');
   let reportBodyEl = document.createElement('tbody');
+  reportBodyEl.setAttribute('id', 'reportBody');  //  set an ID that can be acquired later
   tableEl.appendChild(reportBodyEl);
 
   for (let idx = 0; idx < cookieStores.length; idx++) {
@@ -148,6 +198,14 @@ function renderBody() {
   }
 }
 
+function addBodyHeaderColumn() {
+  //  purpose: draw a single row header for a store
+
+  //  TODO: implement replacement to outer-most loop in function renderBody
+
+}
+
+
 /*  ADD LOCATION FORM data gathering  */
 /*  get reference to the Form in the DOM */
 let addLocationElement = document.getElementById('addLocationSection');
@@ -158,18 +216,43 @@ addLocationFormEl.addEventListener('submit', handleNewLocationAdded);
 
 /*  add an event handler  */
 function handleNewLocationAdded(event) {
+  //  make browser play nice with view and data
   event.preventDefault();
-  let newStoreLocation = event.target.locationName.value;
-  console.log(newStoreLocation);
-  let newStoreMinCust = event.target.minCustomers.value;
-  console.log(newStoreMinCust);
-  let newStoreMaxCust = event.target.maxCustomers.value;
-  console.log(newStoreMaxCust);
-  let newStoreAvgCPerSale = event.target.avgCookiesPerSale.value;
-  console.log(newStoreAvgCPerSale);
 
+  //  capture inputs and set Number types where necessary
+  let newStoreLocation = event.target.locationName.value;
+  console.log(`newStoreLocation: ${newStoreLocation}`);
+  let newStoreMinCust = +event.target.minCustomers.value;
+  console.log(`newStoreMinCust: ${newStoreMinCust}`);
+  let newStoreMaxCust = +event.target.maxCustomers.value;
+  console.log(`newStoreMaxCust: ${newStoreMaxCust}`);
+  let newStoreAvgCPerSale = +event.target.avgCookiesPerSale.value;
+  console.log(`newStoreAvgCPerSale: ${newStoreAvgCPerSale}`);
+
+  //  instantiate a new store instance
+  console.log(`cookieStores.length: ${cookieStores.length}`);
+  new CookieStore(newStoreLocation, newStoreMinCust, newStoreMaxCust, newStoreAvgCPerSale);
+  console.log(`cookieStores.length: ${cookieStores.length}`);
+
+  // //  generate a sales report for the new instance
+  // cookieStores[cookieStores.length - 1].generateSalesReport();
+
+  //  regenerate sales report for all locations now that new store added
+  console.log(`allStoresSalesData.length: ${allStoresSalesData.length}`);
+  generateSalesReports();
+
+  //  remove footer
+  removeReportTableFooter();
+
+  //  add newest store data row
+  let lastStoreInArray = cookieStores[cookieStores.length - 1];
+  appendSingleStoreToHourlySalesReportBody(lastStoreInArray);
+
+  //  add footer with new hourly totals
+  renderFooter();
 }
 /*  END Add Location Form data gathering code  */
+
 
 /*  call all functions to populate the page */
 function go() {
@@ -179,6 +262,7 @@ function go() {
   new CookieStore('Paris', 20, 38, 2.3);
   new CookieStore('Lima', 2, 16, 4.6);
   populateAllStoresSalesData();
+  console.log(`allStoresSalesData: ${allStoresSalesData}`);
   renderHeader();
   renderBody();
   renderFooter();
