@@ -1,13 +1,17 @@
 body {
   color: rgb(15,7,0); /*  body font color */
-  background-color: rgb(50, 69, 119); /* steely puget blue */
+  background-color: rgb(50, 69, 119, 0.7); /* steely puget blue */
   font-family: Arial, Tahoma, sans-serif;
   font-size: 100%;
 }
 header {
+  background-color: rgb(255,213,171);
   width: 100%;
   justify-content: center;
   display: flex;
+}
+header > figure {
+  background-color: rgb(255,213,171);
 }
 nav {
   font-family: Georgia, 'Times New Roman', Times, serif;
@@ -15,12 +19,17 @@ nav {
 }
 footer {
   width: 100%;
+  height: 90px;
+  background-color: rgb(255,213,171); /* report background */
+  border: solid black 2px;
+  border-radius: 8px;
 }
 main {
   width: 100%;
 }
 section {
   margin: auto;
+  padding: 2px;
 }
 h1 {
   padding: 10px 4px;
@@ -33,7 +42,7 @@ h2 {
   font-size: 1.6em;
 }
 h3 {
-  padding: 10px 4px;
+  padding: 10px 6px;
   font-size: 1.4em;
   font-weight: bolder;
   display: block;
@@ -53,18 +62,23 @@ li {
   margin: 0.2em 0em;
 }
 table, th, td {
+  font-size: 0.95em;;
   border: black 2px solid;
+  border-radius: 8px;
   padding: 4px;
+  margin: 10px;
   text-align: center;
   color:rgb(2,71,28);
   background-color: rgb(255,213,171); /* report background */
+  width: auto;
 }
 th {
   color: rgb(98,50,3);  /* report headers */
   font-weight: bolder;
 }
-figure {
+#headernav {
   width: 100%;
+  background-color: rgb(255,213,171);
 }
 figcaption {
   font-size: .5em;
@@ -77,12 +91,42 @@ img {
   width: 600px;
   margin: auto;
 }
-#aboutus {
+#left-right-articles {
   display:flex;
+}
+#xmas-cookie {
+  width: 200px;
+}
+#salmon-tee {
+  width: 200px;
+}
+#familypic {
+  width: 300px;
+}
+#fishpic {
+  width: 200px;
+}
+#cookie-cutter {
+  width: 200px;
 }
 #locationsetc {
   display: flex;
-  align-content: space-around;
+  align-content: center;
+  justify-content: space-around;
+}
+#locationsetc > article {
+  text-align: center;
+}
+#locationsetc > article:nth-child(1){
+  max-width: 250px;
+}
+#lotsacontent{
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+}
+#our-story-article {
+  display:flex;
 }
 #boldme {
   font-weight: bold;
@@ -102,4 +146,31 @@ img {
 }
 :visited {
   color: rgb(9,24,66); /* alternate font */
+}
+p {
+  font-size: 100%;
+  padding: 10px;
+  color: rgb(9,24,66); /* alternate font */
+}
+fieldset {
+  border: rgb(1,3,10) double 4px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  padding: 20px;
+  width: 300px;
+}
+input {
+  display: block;
+  padding: 4px;
+  margin: 4px;
+  border-radius: 8px;
+}
+button {
+  color: rgb(177,119,61); /* a font color  */
+  background-color: rgb(9,24,66); /* alternate font */
+  font-weight: bolder;
+  padding: 6px;
+  border-radius: 8px;
 }
