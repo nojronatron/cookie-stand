@@ -1,13 +1,17 @@
 body {
   color: rgb(15,7,0); /*  body font color */
-  background-color: rgb(50, 69, 119); /* steely puget blue */
+  background-color: rgb(50, 69, 119, 0.7); /* steely puget blue */
   font-family: Arial, Tahoma, sans-serif;
   font-size: 100%;
 }
 header {
+  background-color: rgb(255,213,171);
   width: 100%;
   justify-content: center;
   display: flex;
+}
+header > figure {
+  background-color: rgb(255,213,171);
 }
 nav {
   font-family: Georgia, 'Times New Roman', Times, serif;
@@ -15,6 +19,9 @@ nav {
 }
 footer {
   width: 100%;
+  height: 90px;
+  background-color: rgb(255,213,171); /* report background */
+  border: solid black 2px;
 }
 main {
   width: 100%;
@@ -33,7 +40,7 @@ h2 {
   font-size: 1.6em;
 }
 h3 {
-  padding: 10px 4px;
+  padding: 10px 6px;
   font-size: 1.4em;
   font-weight: bolder;
   display: block;
@@ -63,8 +70,9 @@ th {
   color: rgb(98,50,3);  /* report headers */
   font-weight: bolder;
 }
-figure {
+#headernav {
   width: 100%;
+  background-color: rgb(255,213,171);
 }
 figcaption {
   font-size: .5em;
@@ -82,7 +90,22 @@ img {
 }
 #locationsetc {
   display: flex;
-  align-content: space-around;
+  align-content: center;
+  justify-content: space-around;
+}
+#locationsetc > article {
+  text-align: center;
+}
+#locationsetc > article:nth-child(1){
+  max-width: 250px;
+}
+#lotsacontent{
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+}
+#familypic {
+  width: 300px;
 }
 #boldme {
   font-weight: bold;
@@ -101,5 +124,10 @@ img {
   font-family: 'Courgette', cursive;
 }
 :visited {
+  color: rgb(9,24,66); /* alternate font */
+}
+p {
+  font-size: 100%;
+  padding: 10px;
   color: rgb(9,24,66); /* alternate font */
 }
