@@ -51,21 +51,16 @@ function generateSalesReports() {
 function populateAllStoresSalesData() {
   let allStoresSales = generateSalesReports();
 
-  // for (let cookieStoreId = 0; cookieStoreId < cookieStores.length; cookieStoreId++){
-  //   cookieStores[cookieStoreId].generateSalesReport();
-  //   allStoresSales.push(cookieStores[cookieStoreId].hourlySales);
-  // }
-
   for (let timeframe = 0; timeframe < 14; timeframe++){
     let runningSum = 0;
 
     for (let storeLocation = 0; storeLocation < cookieStores.length; storeLocation++) {
       runningSum += allStoresSales[storeLocation][timeframe];
     }
-
-    console.log(`allStoresSalesData.push(runningSum): ${runningSum}`);    allStoresSalesData.push(runningSum);
+    
+    allStoresSalesData.push(runningSum);
   }
-  console.log(`allStoresSalesData: [${allStoresSalesData}]`);
+
 }
 
 /*  render the header row */
@@ -123,7 +118,7 @@ function renderFooter() {
   summedFooterEl.appendChild(sumTotalsRow);
 
   let tf1El = document.createElement('td');
-  tf1El.setAttribute('id', 'boldme'); //  theres a first time for everything
+  tf1El.setAttribute('id', 'boldme');
   tf1El.textContent = 'Totals';
   sumTotalsRow.appendChild(tf1El);
 
@@ -133,8 +128,6 @@ function renderFooter() {
     sumTotalsRow.appendChild(sumRowEl);
   }
 }
-
-
 
 /*  append a row to an existing table body including store name, hourly data, and Store TTL */
 function appendSingleStoreToHourlySalesReportBody(store) {
@@ -198,14 +191,6 @@ function renderBody() {
   }
 }
 
-function addBodyHeaderColumn() {
-  //  purpose: draw a single row header for a store
-
-  //  TODO: implement replacement to outer-most loop in function renderBody
-
-}
-
-
 /*  ADD LOCATION FORM data gathering  */
 /*  get reference to the Form in the DOM */
 let addLocationElement = document.getElementById('addLocationSection');
@@ -221,24 +206,14 @@ function handleNewLocationAdded(event) {
 
   //  capture inputs and set Number types where necessary
   let newStoreLocation = event.target.locationName.value;
-  console.log(`newStoreLocation: ${newStoreLocation}`);
   let newStoreMinCust = +event.target.minCustomers.value;
-  console.log(`newStoreMinCust: ${newStoreMinCust}`);
   let newStoreMaxCust = +event.target.maxCustomers.value;
-  console.log(`newStoreMaxCust: ${newStoreMaxCust}`);
   let newStoreAvgCPerSale = +event.target.avgCookiesPerSale.value;
-  console.log(`newStoreAvgCPerSale: ${newStoreAvgCPerSale}`);
 
   //  instantiate a new store instance
-  console.log(`cookieStores.length: ${cookieStores.length}`);
   new CookieStore(newStoreLocation, newStoreMinCust, newStoreMaxCust, newStoreAvgCPerSale);
-  console.log(`cookieStores.length: ${cookieStores.length}`);
-
-  // //  generate a sales report for the new instance
-  // cookieStores[cookieStores.length - 1].generateSalesReport();
-
+  
   //  regenerate sales report for all locations now that new store added
-  console.log(`allStoresSalesData.length: ${allStoresSalesData.length}`);
   generateSalesReports();
 
   //  remove footer
