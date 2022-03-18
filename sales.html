@@ -31,16 +31,16 @@
         <fieldset>
           <legend>Add A New Location</legend>
             <label for="locationName">Location Name</label>
-            <input type="text" id="locationName" name="locationName">
+            <input type="text" id="locationName" name="locationName" minlength="2" maxlength="30" required>
 
             <label for="minCustomers">Minimum Customers Per Hour</label>
-            <input type="number" id="minCustomers" name="minCustomers">
+            <input type="number" id="minCustomers" name="minCustomers" min="0" max="1000">
 
             <label for="maxCustomers">Maximum Customers Per Hour</label>
-            <input type="number" id="maxCustomers" name="maxCustomers">
+            <input type="number" id="maxCustomers" name="maxCustomers" min="0" max="100000">
 
             <label for="avgCookiesPerSale">Average Cookies Per Sale</label>
-            <input type="number" id="avgCookiesPerSale" name="avgCookiesPerSale">
+            <input type="number" id="avgCookiesPerSale" name="avgCookiesPerSale" min="0" max="100" step="0.1">
             
         <button type="submit">Submit</button>
 
