@@ -208,8 +208,10 @@ function handleNewLocationAdded(event) {
   let newStoreLocation = event.target.locationName.value;
   let newStoreMinCust = +event.target.minCustomers.value;
   let newStoreMaxCust = +event.target.maxCustomers.value;
-  let newStoreAvgCPerSale = +event.target.avgCookiesPerSale.value;
-
+  let temp = event.target.avgCookiesPerSale.value;
+  let newStoreAvgCPerSale = Number.parseFloat(temp);
+  console.log(temp, newStoreAvgCPerSale);
+  
   //  instantiate a new store instance
   new CookieStore(newStoreLocation, newStoreMinCust, newStoreMaxCust, newStoreAvgCPerSale);
   
@@ -237,7 +239,6 @@ function go() {
   new CookieStore('Paris', 20, 38, 2.3);
   new CookieStore('Lima', 2, 16, 4.6);
   populateAllStoresSalesData();
-  console.log(`allStoresSalesData: ${allStoresSalesData}`);
   renderHeader();
   renderBody();
   renderFooter();
