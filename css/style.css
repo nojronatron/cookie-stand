@@ -1,8 +1,9 @@
 body {
   color: rgb(15,7,0); /*  body font color */
   background-color: rgb(50, 69, 119, 0.7); /* steely puget blue */
-  font-family: Arial, Tahoma, sans-serif;
+  font-family: Georgia, Times, serif;
   font-size: 100%;
+  line-height: 170%;
 }
 header {
   background-color: rgb(255,213,171);
@@ -14,12 +15,11 @@ header > figure {
   background-color: rgb(255,213,171);
 }
 nav {
-  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-family: Georgia, Times, serif;
   background-color: white;
 }
 footer {
   width: 100%;
-  height: 90px;
   background-color: rgb(255,213,171); /* report background */
   border: solid black 2px;
   border-radius: 8px;
@@ -76,6 +76,10 @@ th {
   color: rgb(98,50,3);  /* report headers */
   font-weight: bolder;
 }
+td {
+  font-size: 1.1em;
+  font-family: Arial, Helvetica, sans-serif;
+}
 #headernav {
   width: 100%;
   background-color: rgb(255,213,171);
@@ -127,6 +131,9 @@ img {
 }
 #our-story-article {
   display:flex;
+}
+#our-story-header {
+  color: purple;
 }
 #boldme {
   font-weight: bold;
@@ -181,4 +188,10 @@ input:invalid {
 input:valid {
   border: 2px solid black;
   box-shadow: none;
+}
+#lonechinook > img {
+  width: 50%;
+}
+em {
+  font-style: italic;
 }
