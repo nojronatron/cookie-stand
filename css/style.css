@@ -132,6 +132,9 @@ img {
 #our-story-article {
   display:flex;
 }
+#our-story-header {
+  color: purple;
+}
 #boldme {
   font-weight: bold;
 }
@@ -188,4 +191,7 @@ input:valid {
 }
 #lonechinook > img {
   width: 50%;
+}
+em {
+  font-style: italic;
 }
