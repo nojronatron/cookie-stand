@@ -1,8 +1,9 @@
 body {
   color: rgb(15,7,0); /*  body font color */
   background-color: rgb(50, 69, 119, 0.7); /* steely puget blue */
-  font-family: Arial, Tahoma, sans-serif;
+  font-family: Georgia, Times, serif;
   font-size: 100%;
+  line-height: 170%;
 }
 header {
   background-color: rgb(255,213,171);
@@ -14,12 +15,12 @@ header > figure {
   background-color: rgb(255,213,171);
 }
 nav {
-  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-family: Georgia, Times, serif;
   background-color: white;
 }
 footer {
   width: 100%;
-  height: 90px;
+  height: 120px;
   background-color: rgb(255,213,171); /* report background */
   border: solid black 2px;
   border-radius: 8px;
