@@ -121,12 +121,18 @@ function renderFooter() {
   tf1El.setAttribute('id', 'boldme');
   tf1El.textContent = 'Totals';
   sumTotalsRow.appendChild(tf1El);
+  let totalOfDailyTotals = 0;
 
-  for (let storeId = 0; storeId < 15; storeId++){
+  for (let storeId = 0; storeId < 14; storeId++){
     let sumRowEl = document.createElement('td');
     sumRowEl.textContent = allStoresSalesData[storeId];
+    totalOfDailyTotals += Number.parseInt(allStoresSalesData[storeId]);
     sumTotalsRow.appendChild(sumRowEl);
   }
+
+  let sumRowTtlTotalEl = document.createElement('td');
+  sumRowTtlTotalEl.textContent = totalOfDailyTotals;
+  sumTotalsRow.appendChild(sumRowTtlTotalEl);
 }
 
 /*  append a row to an existing table body including store name, hourly data, and Store TTL */
